@@ -1,0 +1,15 @@
+{
+  "name": "parsejs",
+  "version": "1.0.0",
+  "description": "Declaratively parse your JSON payload",
+  "main": "parse.js",
+  "scripts": {
+    "start": "node parse.js",
+    "test": "node parse.test.js"
+  },
+  "author": "Joshua Martin",
+  "license": "ISC",
+  "dependencies": {
+    "object.fromentries": "^2.0.1"
+  }
+}
