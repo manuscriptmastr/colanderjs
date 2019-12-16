@@ -1,4 +1,4 @@
-# ParseJS: Declarative JSON parsing
+# Colander
 
 Given a declarative resolver and a JSON payload, return a new payload whose shape is identical to the structure of the resolver:
 ```js
