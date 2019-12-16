@@ -1,11 +1,11 @@
 {
-  "name": "parsejs",
+  "name": "colanderjs",
   "version": "1.0.0",
-  "description": "Declaratively parse your JSON payload",
-  "main": "parse.js",
+  "description": "Declarative JSON parser",
+  "main": "colander.js",
   "scripts": {
-    "start": "node parse.js",
-    "test": "node parse.test.js"
+    "start": "node colander.js",
+    "test": "node colander.test.js"
   },
   "author": "Joshua Martin",
   "license": "ISC",

@@ -19,19 +19,19 @@ const toResolver = (valueOrFunc) =>
     ? valueOrFunc
     : () => valueOrFunc;
 
-const p = (extract, children) => (data, root) => {
+const c = (extract, children) => (data, root) => {
   const newData = toGetter(extract)(data, root);
   return (newData === undefined || newData === null) ?
       null
   : children === undefined ?
       newData
   : Array.isArray(children) ?
-      newData.map(d => p(d => d, children[0])(d, root))
+      newData.map(d => c(d => d, children[0])(d, root))
   :
       mapValues(child => toResolver(child)(newData, root), children);
 };
 
-const parse = (...args) => (data) => {
+const colander = (...args) => (data) => {
   let extract;
   let resolvers;
 
@@ -43,7 +43,7 @@ const parse = (...args) => (data) => {
     resolvers = args[0];
   }
 
-  return p(extract, resolvers)(data, data);
+  return c(extract, resolvers)(data, data);
 };
 
-module.exports = { parse, p };
+module.exports = { colander, c };
