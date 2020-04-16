@@ -1,15 +1,16 @@
 {
   "name": "colanderjs",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Declarative JSON parser",
   "main": "colander.js",
   "scripts": {
-    "start": "node colander.js",
-    "test": "node colander.test.js"
+    "test": "ava --verbose --watch"
   },
   "author": "Joshua Martin",
   "license": "ISC",
   "dependencies": {
+    "ava": "^3.7.0",
     "object.fromentries": "^2.0.1"
-  }
+  },
+  "type": "module"
 }

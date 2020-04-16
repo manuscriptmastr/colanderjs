@@ -1,4 +1,7 @@
-if (!Object.hasOwnProperty('fromEntries')) { Object.fromEntries = require('object.fromentries') };
+/**
+ * @typedef {(Object | Array)} Resolvers
+ * @typedef {(parent: any, root?: any) => any} Extractor
+ */
 
 const mapValues = (transform, object) =>
   Object.fromEntries(Object.entries(object)
@@ -19,18 +22,34 @@ const toResolver = (valueOrFunc) =>
     ? valueOrFunc
     : () => valueOrFunc;
 
-const c = (extract, children) => (data, root) => {
+/**
+ * Returns data from `extract` and either returns or passes on to `resolvers`
+ * @param {(string | Extractor)} extract
+ * @param {Resolvers} resolvers
+ * @example
+ * c('username')({ username: 'manuscriptmaster' });
+ * // => 'manuscriptmaster'
+ * c(data => data.username)({ username: 'manuscriptmaster' });
+ * // => 'manuscriptmaster'
+ * c('user', { id: c('id'), username: c('name') })({ user: { id: 1, name: 'manuscriptmaster' } });
+ * // => { id: 1, username: 'manuscriptmaster' }
+ */
+export const c = (extract, resolvers) => (data, root) => {
   const newData = toGetter(extract)(data, root);
   return (newData === undefined || newData === null) ?
       null
-  : children === undefined ?
+  : resolvers === undefined ?
       newData
-  : Array.isArray(children) ?
-      newData.map(d => c(d => d, children[0])(d, root))
+  : Array.isArray(resolvers) ?
+      newData.map(d => c(d => d, resolvers[0])(d, root))
   :
-      mapValues(child => toResolver(child)(newData, root), children);
+      mapValues(child => toResolver(child)(newData, root), resolvers);
 };
 
+/**
+ * Top-level alias of `c`
+ * @param  {([Resolvers] | [Extractor, Resolvers])} args
+ */
 const colander = (...args) => (data) => {
   let extract;
   let resolvers;
@@ -46,4 +65,4 @@ const colander = (...args) => (data) => {
   return c(extract, resolvers)(data, data);
 };
 
-module.exports = { colander, c };
+export default colander;
