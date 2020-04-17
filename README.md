@@ -2,12 +2,11 @@
 
 Given a declarative resolver and a JSON payload, return a new payload whose shape is identical to the structure of the resolver:
 ```js
-const { colander, c } = require('colanderjs');
-const { truncate } = require('./utils/truncate');
+import colander, { c } from 'colanderjs';
+import truncate from './utils/truncate';
 
-// c((parent, root) => child, resolvers) locates child from parent
-// and resolves child to shape of resolver.
-// colander(extractFromPayload?, resolvers)(json) is a top-level version of c.
+// c(extract, resolvers) extracts data from parent and either returns or passes to next resolver
+// colander(extractFromPayload?, resolvers)(payload) is a top-level version of c.
 const parseWorksByAuthor = colander({
   author: c('user', {
     name: c('fullName'),
@@ -39,7 +38,8 @@ fetch('/api/books/tolkien')
 //   }
 // }
 ```
-The original payload `root` is passed as a second argument in case you need to refer to information elsewhere in the tree structure:
+
+The original payload `root` is passed as a second argument to `c()` in case you need to refer back to information from original json:
 
 ```js
 const parseAuthors = colander({
@@ -73,6 +73,5 @@ APIs often return a payload you need to traverse prior to parsing. You can pass 
 const parseAuthors = colander(payload => payload.response.authors, [{
   name: c('fullName'),
   group: c('memberOf')
-  ...
 }]);
 ```
