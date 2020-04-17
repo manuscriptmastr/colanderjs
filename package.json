@@ -9,8 +9,7 @@
   "author": "Joshua Martin",
   "license": "ISC",
   "dependencies": {
-    "ava": "^3.7.0",
-    "object.fromentries": "^2.0.1"
+    "ava": "^3.7.0"
   },
   "type": "module"
 }
