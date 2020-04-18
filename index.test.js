@@ -1,5 +1,5 @@
 import test from 'ava';
-import colander, { c } from './colander.js';
+import colander, { c } from './index.js';
 
 test('colander(resolvers) updates property name', t => {
   t.deepEqual(
