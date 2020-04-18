@@ -1,15 +1,25 @@
 {
   "name": "colanderjs",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Declarative JSON parser",
-  "main": "colander.js",
+  "homepage": "https://github.com/manuscriptmastr/colanderjs",
+  "main": "index.js",
   "scripts": {
     "test": "ava --verbose --watch"
   },
   "author": "Joshua Martin",
   "license": "ISC",
-  "dependencies": {
+  "type": "module",
+  "devDependencies": {
     "ava": "^3.7.0"
   },
-  "type": "module"
+  "engines" : {
+    "node" : ">=13.2.0"
+  },
+  "keywords": [
+    "parse",
+    "JSON",
+    "declarative",
+    "transform"
+  ]
 }
