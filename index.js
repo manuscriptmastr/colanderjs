@@ -1,11 +1,9 @@
+import map from 'ramda/src/map.js';
+
 /**
  * @typedef {(Object | Array)} Resolvers
  * @typedef {(parent: any, root?: any) => any} Extractor
  */
-
-const mapValues = (transform, object) =>
-  Object.fromEntries(Object.entries(object)
-    .map(([key, value]) => [key, transform(value)]));
 
 const get = (key) => (data) =>
   typeof data === 'object' && data !== null && data.hasOwnProperty(key)
@@ -43,7 +41,7 @@ export const c = (extract, resolvers) => (data, root) => {
   : Array.isArray(resolvers) ?
       newData.map(d => c(d => d, resolvers[0])(d, root))
   :
-      mapValues(child => toResolver(child)(newData, root), resolvers);
+      map(child => toResolver(child)(newData, root), resolvers);
 };
 
 /**

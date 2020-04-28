@@ -1,25 +1,33 @@
 {
   "name": "colanderjs",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Declarative JSON parser",
-  "homepage": "https://github.com/manuscriptmastr/colanderjs",
-  "main": "index.js",
+  "type": "module",
+  "main": "./dist.js",
+  "module": "./index.js",
+  "exports": {
+    "require": "./dist.js",
+    "import": "./index.js",
+    "default": "./index.js"
+  },
+  "homepage": "https://github.com/manuscriptmastr/colanderjs#readme",
+  "bugs": "https://github.com/manuscriptmastr/colanderjs/issues",
   "scripts": {
     "test": "ava --verbose --watch"
   },
   "author": "Joshua Martin",
   "license": "ISC",
-  "type": "module",
   "devDependencies": {
-    "ava": "^3.7.0"
-  },
-  "engines" : {
-    "node" : ">=13.2.0"
+    "ava": "^3.8.1"
   },
   "keywords": [
     "parse",
     "JSON",
     "declarative",
     "transform"
-  ]
+  ],
+  "dependencies": {
+    "esm": "^3.2.25",
+    "ramda": "^0.27.0"
+  }
 }
