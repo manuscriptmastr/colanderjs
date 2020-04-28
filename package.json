@@ -1,6 +1,6 @@
 {
   "name": "colanderjs",
-  "version": "2.0.2-beta.2",
+  "version": "2.0.2",
   "description": "Declarative JSON parser",
   "type": "module",
   "main": "./dist.js",
