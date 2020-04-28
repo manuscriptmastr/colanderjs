@@ -1,4 +1,4 @@
-# Colander
+# colanderjs
 
 Given a declarative resolver and a JSON payload, return a new payload whose shape is identical to the structure of the resolver:
 ```js
@@ -67,11 +67,20 @@ fetch('/api/authors')
 // }
 ```
 
-APIs often return a payload you need to traverse prior to parsing. You can pass this "extractor" function as the first argument to the top-level `colander`, which also sets `root` to the result of the extraction:
+APIs often return a payload you need to traverse prior to parsing. You can pass this "extractor" function as the first argument to the top-level `colander()`, which also sets `root` to the result of the extraction:
 
 ```js
 const parseAuthors = colander(payload => payload.response.authors, [{
   name: c('fullName'),
   group: c('memberOf')
 }]);
+```
+
+## ES Modules
+As of version `2.0.2`, `colanderjs` is 100% ES Module friendly but backwards compatible. You can use `colanderjs` in a project:
+- with `"type": "module"` set in your top-level `package.json`
+- with a bundler like Webpack (e.g. `create-react-app`)
+- with only CommonJS support:
+```js
+const { default: colander, c } = require('colanderjs');
 ```
