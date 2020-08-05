@@ -1,33 +1,42 @@
 {
   "name": "colanderjs",
-  "version": "2.0.2",
+  "version": "2.0.3-beta.0",
   "description": "Declarative JSON parser",
   "type": "module",
-  "main": "./dist.js",
-  "module": "./index.js",
+  "main": "./cjs/index.cjs",
+  "module": "./src/index.js",
   "exports": {
-    "require": "./dist.js",
-    "import": "./index.js",
-    "default": "./index.js"
+    "require": "./cjs/index.cjs",
+    "import": "./src/index.js",
+    "default": "./src/index.js"
+  },
+  "scripts": {
+    "test": "ava --verbose --watch",
+    "build": "rollup --config"
   },
   "homepage": "https://github.com/manuscriptmastr/colanderjs#readme",
   "bugs": "https://github.com/manuscriptmastr/colanderjs/issues",
-  "scripts": {
-    "test": "ava --verbose --watch"
-  },
   "author": "Joshua Martin",
   "license": "ISC",
-  "devDependencies": {
-    "ava": "^3.8.1"
-  },
   "keywords": [
+    "API",
+    "CMS",
+    "contract",
     "parse",
     "JSON",
     "declarative",
-    "transform"
+    "transform",
+    "payload",
+    "resolver",
+    "spec object",
+    "functional"
   ],
   "dependencies": {
-    "esm": "^3.2.25",
-    "ramda": "^0.27.0"
+    "ramda": "^0.27.1"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^14.0.0",
+    "@rollup/plugin-node-resolve": "^8.4.0",
+    "ava": "^3.9.0"
   }
 }

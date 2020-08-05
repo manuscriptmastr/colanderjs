@@ -1,12 +1,16 @@
 # colanderjs
 
-Given a declarative resolver and a JSON payload, return a new payload whose shape is identical to the structure of the resolver:
+Declarative JSON parser.
+
+Most payloads aren't exactly what you need for your application, but manual parser functions can be large, tricky to write, and brittle.
+
+`colanderjs` is a declarative solution loosely inspired by [GraphQL](https://graphql.org/) that makes it trivial to reshape a JSON object into exactly what you need. The shape you define is the shape you get:
+
 ```js
+import fetch from 'node-fetch';
 import colander, { c } from 'colanderjs';
 import truncate from './utils/truncate';
 
-// c(extract, resolvers) extracts data from parent and either returns or passes to next resolver
-// colander(extractFromPayload?, resolvers)(payload) is a top-level version of c.
 const parseWorksByAuthor = colander({
   author: c('user', {
     name: c('fullName'),
@@ -21,9 +25,6 @@ const parseWorksByAuthor = colander({
 fetch('/api/books/tolkien')
   .then(data => data.json())
   .then(parseWorksByAuthor);
-
-// returns:
-
 // {
 //   author: {
 //     name: 'J. R. R. Tolkien',
@@ -39,9 +40,12 @@ fetch('/api/books/tolkien')
 // }
 ```
 
-The original payload `root` is passed as a second argument to `c()` in case you need to refer back to information from original json:
+The original payload `root` is passed as a second argument to [`c`](https://github.com/manuscriptmastr/colanderjs#c) in case you need to refer back to information from original json:
 
 ```js
+import fetch from 'node-fetch';
+import colander, { c } from 'colanderjs';
+
 const parseAuthors = colander({
   author: c(data => data.authors.find(a => a.username === 'Oxymore'), {
     name: c('fullName'),
@@ -54,9 +58,6 @@ const parseAuthors = colander({
 fetch('/api/authors')
   .then(data => data.json())
   .then(parseAuthors);
-
-// returns:
-
 // {
 //   author: {
 //     name: 'J. R. R. Tolkien',
@@ -67,7 +68,7 @@ fetch('/api/authors')
 // }
 ```
 
-APIs often return a payload you need to traverse prior to parsing. You can pass this "extractor" function as the first argument to the top-level `colander()`, which also sets `root` to the result of the extraction:
+APIs often return a payload you need to traverse prior to parsing. You can pass an extractor function as the first argument to the top-level [`colander`](https://github.com/manuscriptmastr/colanderjs#colander), which also sets `root` to the result of the extraction:
 
 ```js
 const parseAuthors = colander(payload => payload.response.authors, [{
@@ -76,11 +77,27 @@ const parseAuthors = colander(payload => payload.response.authors, [{
 }]);
 ```
 
-## ES Modules
-As of version `2.0.2`, `colanderjs` is 100% ES Module friendly but backwards compatible. You can use `colanderjs` in a project:
-- with `"type": "module"` set in your top-level `package.json`
-- with a bundler like Webpack (e.g. `create-react-app`)
-- with only CommonJS support:
+## API
+
+### `colander`
+
+Top-level alias for [`c`](https://github.com/manuscriptmastr/colanderjs#c).
 ```js
-const { default: colander, c } = require('colanderjs');
+colander({ name: u => u.fullName, group: u => u.memberOf })({ fullName: 'Joshua Martin', memberOf: 'nerds' });
+colander([{ name: u => u.fullName, group: u => u.memberOf }])([{ fullName: 'Joshua Martin', memberOf: 'nerds' }, { fullName: 'John Doe', memberOf: 'geeks' }]);
+colander(payload => payload.user, { name: u => u.fullName, group: u => u.memberOf })({ fullName: 'Joshua Martin', memberOf: 'nerds' });
+```
+
+### `c`
+
+```js
+c('name')({ name: 'Joshua Martin' });
+c('user', { name: u => u.name })({ user: { name: 'Joshua Martin', random: 'yeet' } });
+c('users', [{ name: u => u.name }])({ users: [{ name: 'Joshua Martin' }, { name: 'John Doe' }] });
+c((users, root) => users, [{ name: u => u.name }])([{ name: 'Joshua Martin' }, { name: 'John Doe' }]);
+```
+
+## CommonJS
+```js
+const { colander, c } = require('colanderjs');
 ```
