@@ -48,7 +48,7 @@ export const c = (extract, resolvers) => (data, root) => {
  * Top-level alias of `c`
  * @param  {([Resolvers] | [Extractor, Resolvers])} args
  */
-const colander = (...args) => (data) => {
+export const colander = (...args) => (data) => {
   let extract;
   let resolvers;
 
